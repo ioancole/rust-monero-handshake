@@ -1,4 +1,16 @@
 
+
+// Hard coded seed node addresses from the Monero repository
+pub const MAINNET_ADDRS: [&str; 7] = [
+    "176.9.0.187:18080",
+    "88.198.163.90:18080",
+    "66.85.74.134:18080",
+    "51.79.173.165:18080",
+    "192.99.8.110:18080",
+    "37.187.74.171:18080",
+    "77.172.183.193:18080"
+];
+
 pub const TESTNET_ADDRS: [&str; 5] = [
     "176.9.0.187:28080",
     "51.79.173.165:28080",
@@ -15,24 +27,18 @@ pub const STAGENET_ADDRS: [&str; 5] = [
     "77.172.183.193:38080",
 ];
 
-pub const MAINNET_ADDRS: [&str; 7] = [
-    "176.9.0.187:18080",
-    "88.198.163.90:18080",
-    "66.85.74.134:18080",
-    "51.79.173.165:18080",
-    "192.99.8.110:18080",
-    "37.187.74.171:18080",
-    "77.172.183.193:18080"
-];
-
+// Portable storage constants
 pub const SIGNATURE_A: [u8; 4] = [0x01, 0x11, 0x01, 0x01];
 pub const SIGNATURE_B: [u8; 4] = [0x01, 0x01, 0x02, 0x01];
+pub const PORTABLE_STORAGE_PROTOCOL_VERSION: u8 = 0x01;
 
+
+// Levin protocol constants
 pub const LEVIN_PROTOCOL_SIGNATURE: u64 = 0x0101010101012101;
 pub const LEVIN_PROTOCOL_VERSION: u32 = 0x01;
 
 // Network IDs (UUID)
-pub const MAIN_NETWORK_ID: [u8; 16] = [
+pub const MAINNET_NETWORK_ID: [u8; 16] = [
     0x12 ,0x30, 0xF1, 0x71, 0x61, 0x04 , 0x41, 0x61,
     0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x10];
 
@@ -44,8 +50,8 @@ pub const STAGENET_NETWORK_ID: [u8; 16] = [
     0x12 ,0x30, 0xF1, 0x71, 0x61, 0x04 , 0x41, 0x61,
     0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x12];
 
-// Commands and types as defined in https://github.com/monero-project/monero/blob/master/docs/PORTABLE_STORAGE.md
 
+// Commands and types as defined in https://github.com/monero-project/monero/blob/master/docs/PORTABLE_STORAGE.md
 pub const COMMAND_HANDSHAKE: u32 = 1001;
 pub const COMMAND_TIMED_SYNC: u32 = 1002;
 pub const COMMAND_PING: u32 = 1003;
