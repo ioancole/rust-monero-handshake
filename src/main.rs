@@ -3,11 +3,9 @@ mod constants;
 mod protocol;
 mod utils;
 mod program;
+mod tests;
 
 use std::io::{self, Write};
-use crate::protocol::{
-    test_parse_object_2
-};
 
 use crate::program::{run_program};
 
@@ -40,8 +38,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     let _ = run_program(chain).await;
-
-    // test_parse_object_2();
 
     Ok(())
 }

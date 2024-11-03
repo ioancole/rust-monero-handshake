@@ -17,27 +17,21 @@ pub struct CoreSyncData {
     pub top_version: u8,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct CryptoHash {
-    pub data: [u8; 32],
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct RequestMessage {
-    pub header: BucketHead2,
-    pub message: HandshakeRequest, // Replace with the actual type
-}
-
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug)]
 pub struct HandshakeRequest {
     pub node_data: BasicNodeData
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct HandshakeResponse {
     pub local_peerlist_new: Vec<PeerlistEntry>,
     pub node_data: BasicNodeData,
     pub payload_data: CoreSyncData,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct SupportFlagsRequest {
+    pub support_flags: u8,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
