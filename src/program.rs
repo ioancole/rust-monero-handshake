@@ -117,6 +117,8 @@ pub async fn read_responses(stream: &mut TcpStream) -> Result<(), Box<dyn std::e
         }
     }
     
+    println!("Finished reading responses from node.\n");
+    println!("Exiting program!\n");
     Ok(())
 }
 
