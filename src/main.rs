@@ -18,6 +18,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     info!("Starting the Monero handshake program\n");
 
+    println!("Welcome to the Monero handshaker!\n");
     println!("Please select which chain you would like to connect to.");
     println!("1. Mainnet");
     println!("2. TestNet");

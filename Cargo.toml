@@ -1,5 +1,5 @@
 [package]
-name = "monero_rust_handshake"
+name = "rust_monero_handshake"
 version = "0.1.0"
 edition = "2018"
 authors = ["Ioan Coleman, ioan.coleman@gmail.com"]
@@ -7,7 +7,6 @@ authors = ["Ioan Coleman, ioan.coleman@gmail.com"]
 [dependencies]
 tokio = { version = "1", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
-uuid = { version = "1.0", features = ["serde", "v4"] }
 bincode = "1.3"
 rand = "0.9.0-alpha.2"
 byteorder = "1.5.0"

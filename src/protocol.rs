@@ -72,15 +72,15 @@ pub fn deserialize_body_response(body_response_data: &[u8], command_id: u32) -> 
     let signature2 = &body_response_data[4..8];
     let version = &body_response_data[8..9];
 
-    if signature1 != [0x01, 0x11, 0x01, 0x01] {
+    if signature1 != SIGNATURE_A {
         return Err(bincode::Error::custom("Invalid SIGNATURE_A"));
     }
 
-    if signature2 != [0x01, 0x01, 0x02, 0x01] {
+    if signature2 != SIGNATURE_B {
         return Err(bincode::Error::custom("Invalid SIGNATURE_B"));
     }
 
-    if version != [0x01] {
+    if version != [PORTABLE_STORAGE_PROTOCOL_VERSION] {
         return Err(bincode::Error::custom("Invalid version"));
     }
 

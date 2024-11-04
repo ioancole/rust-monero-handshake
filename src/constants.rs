@@ -1,4 +1,4 @@
-
+#![allow(dead_code)]
 
 // Hard coded seed node addresses from the Monero repository
 pub const MAINNET_ADDRS: [&str; 7] = [
