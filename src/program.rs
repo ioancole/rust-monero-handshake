@@ -13,6 +13,7 @@ use std::time::{Instant, Duration};
 use crate::network::BucketHead2;
 use crate::constants::LEVIN_PROTOCOL_SIGNATURE;
 use crate::protocol::deserialize_body_response;
+use log::{info, warn, error};
 
 pub async fn run_program(chain: u32) -> Result<(), Box<dyn std::error::Error>> {
     let addresses: Vec<&str>;
@@ -37,24 +38,24 @@ pub async fn run_program(chain: u32) -> Result<(), Box<dyn std::error::Error>> {
             network_id = STAGENET_NETWORK_ID.to_vec();
         },
         _ => {
-            println!("Invalid chain");
+            error!("Invalid chain");
             return Ok(());
         }
     }
 
-    println!("\nConnecting to Monero {} chain...", env_name);
+    info!("Connecting to Monero {} chain...", env_name);
 
     let mut stream: Option<TcpStream> = None;
     
     for i in 0..addresses.len() {
-        println!("Connecting to seed node: {}\n", addresses[i]);
+        info!("Connecting to seed node: {}", addresses[i]);
         match TcpStream::connect(addresses[i]).await {
             Ok(s) => {
                 stream = Some(s);
                 break;
             },
             Err(e) => {
-                println!("Error connecting to seed node: {}", e);
+                warn!("Error connecting to seed node: {}", e);
             }
         }
     }
@@ -62,17 +63,17 @@ pub async fn run_program(chain: u32) -> Result<(), Box<dyn std::error::Error>> {
     let mut stream = match stream {
         Some(s) => s,
         None => {
-            println!("Failed to connect to any seed node.");
+            error!("Failed to connect to any seed node.");
             return Ok(());
         }
     };
 
     if let Err(e) = send_handshake(network_id, &mut stream).await {
-        eprintln!("Problem sending handshake: {}", e);
+        error!("Problem sending handshake: {}", e);
     }
 
     if let Err(e) = read_responses(&mut stream).await {
-        eprintln!("Receiving responses: {}", e);
+        error!("Receiving responses: {}", e);
     }
 
     Ok(())
@@ -84,7 +85,7 @@ pub async fn send_handshake(network_id: Vec<u8>, stream: &mut TcpStream) -> Resu
     let mut message_bytes = header_bytes;
     message_bytes.extend(body_bytes);
 
-    println!("Sending HANDSHAKE REQUEST to node...\n");
+    info!("Sending HANDSHAKE REQUEST to node...");
 
     stream.write_all(&message_bytes).await?;
     Ok(())
@@ -98,14 +99,14 @@ pub async fn read_responses(stream: &mut TcpStream) -> Result<(), Box<dyn std::e
     loop {
         let mut buffer = vec![0; 1024];
         let n = stream.read(&mut buffer).await?;
-        message_cursor.write_all(&buffer[0..n]).await?;
+        let _ = message_cursor.write_all(&buffer[0..n]).await?;
 
         let messages_end_index = process_current_buffer(&message_cursor.get_ref())?;
         
         if messages_end_index > 0 {
             let a = message_cursor.get_ref()[messages_end_index..].to_vec();
             message_cursor = Cursor::new(Vec::new());
-            message_cursor.write_all(&a).await;
+            let _ = message_cursor.write_all(&a).await;
         }
 
         let ten_millis = time::Duration::from_millis(10);
@@ -117,8 +118,8 @@ pub async fn read_responses(stream: &mut TcpStream) -> Result<(), Box<dyn std::e
         }
     }
     
-    println!("Finished reading responses from node.\n");
-    println!("Exiting program!\n");
+    info!("Finished reading responses from node.");
+    info!("Exiting program!\n");
     Ok(())
 }
 

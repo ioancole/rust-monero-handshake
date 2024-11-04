@@ -25,13 +25,13 @@ pub struct HandshakeRequest {
 #[derive(Deserialize, Debug)]
 pub struct HandshakeResponse {
     pub local_peerlist_new: Vec<PeerlistEntry>,
-    pub node_data: BasicNodeData,
-    pub payload_data: CoreSyncData,
+    pub _node_data: BasicNodeData,
+    pub _payload_data: CoreSyncData,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
 pub struct SupportFlagsRequest {
-    pub support_flags: u8,
+    pub _support_flags: u8,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

@@ -6,13 +6,18 @@ mod program;
 mod tests;
 
 use std::io::{self, Write};
+use env_logger::Env;
+use log::{info, error};
 
 use crate::program::{run_program};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
-    println!("Welcome to the Monero handshaker!");
+    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
+
+    info!("Starting the Monero handshake program\n");
+
     println!("Please select which chain you would like to connect to.");
     println!("1. Mainnet");
     println!("2. TestNet");
@@ -33,7 +38,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     if chain == 4 {
-        println!("Exiting program...");
+        error!("Exiting program...");
         return Ok(());
     }
 

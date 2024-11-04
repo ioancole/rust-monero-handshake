@@ -6,7 +6,7 @@ mod tests {
     use crate::constants::*;
     
     #[test]
-    fn test_parse_section_string() { ;
+    fn test_parse_section_string() {
 
         let section_bytes = [4, 97, 98, 99, 100, SERIALIZE_TYPE_STRING, 12, 97, 97, 97];
 
@@ -22,7 +22,7 @@ mod tests {
 
 
     #[test]
-    fn test_parse_section_u64() { ;
+    fn test_parse_section_u64() {
 
         let section_bytes = [1, 97, SERIALIZE_TYPE_INT64, 0x1, 0x3, 0x5, 0x7, 0x9, 0xb, 0xd, 0xf];
         
@@ -37,7 +37,7 @@ mod tests {
 
 
     #[test]
-    fn test_parse_section_bool() { ;
+    fn test_parse_section_bool() {
 
         let section_bytes = [1, 97, SERIALIZE_TYPE_BOOL, 0x1];
         
@@ -52,7 +52,7 @@ mod tests {
 
 
     #[test]
-    fn test_parse_section_object() { ;
+    fn test_parse_section_object() {
 
         #[derive(Deserialize, Debug)]
         struct TestObject {

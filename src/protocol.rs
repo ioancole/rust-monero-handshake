@@ -11,6 +11,7 @@ use crate::utils::u32_to_ip;
 
 use byteorder::{LittleEndian, WriteBytesExt};
 use std::mem;
+use log::{info, warn};
 
 use crate::constants::*;
 
@@ -34,7 +35,7 @@ pub fn get_handshake_body_bytes(network_id: Vec<u8>) -> Vec<u8> {
         node_data: BasicNodeData {
             network_id: network_id,
             my_port: 0,
-            peer_id: rng.gen(),
+            peer_id: rng.random(),
             support_flags: 0,
         }
     };
@@ -88,7 +89,7 @@ pub fn deserialize_body_response(body_response_data: &[u8], command_id: u32) -> 
     match command_id {
         COMMAND_HANDSHAKE => {
             let handshake_response: HandshakeResponse = parse_handshake_response(body_bytes);
-            println!("Recieved HANDSHAKE RESPONSE (1001) from node, containing {} Monero nodes:\n", handshake_response.local_peerlist_new.len());
+            info!("Recieved HANDSHAKE RESPONSE (1001) from node, containing {} Monero nodes:\n", handshake_response.local_peerlist_new.len());
             for i in 0..10 {
                 let entry = &handshake_response.local_peerlist_new[i];
                 print!("{} - ", i + 1);
@@ -99,19 +100,19 @@ pub fn deserialize_body_response(body_response_data: &[u8], command_id: u32) -> 
         },
         COMMAND_SUPPORT_FLAGS => {
             let _support_flags: SupportFlagsRequest = bincode::deserialize(body_bytes).ok().unwrap();
-            println!("Received SUPPORT FLAGS REQUEST (2006) from node");
+            info!("Received SUPPORT FLAGS REQUEST (2006) from node");
         },
         COMMAND_NEW_TRANSACTIONS => {
-            println!("Received NEW TRANSACTIONS COMMAND (2002) from node");
+            info!("Received NEW TRANSACTIONS COMMAND (2002) from node");
         },
         COMMAND_REQUEST_CHAIN => {
-            println!("Received REQUEST CHAIN COMMAND (2005) from node");
+            info!("Received REQUEST CHAIN COMMAND (2005) from node");
         },
         COMMAND_RESPONSE_CHAIN_ENTRY => {
-            println!("Received REQUEST CHAIN ENTRY COMMAND (2006) from node");
+            info!("Received REQUEST CHAIN ENTRY COMMAND (2006) from node");
         },
         _ => {
-            println!("COMMAND ID: {:?}", command_id);
+            warn!("COMMAND ID: {:?}", command_id);
             return Err(bincode::Error::custom("Invalid command ID"));
         }
     }
@@ -172,7 +173,7 @@ pub fn parse_section(current_index: usize, buff: &[u8], new_bytes_cursor: &mut C
 
     let key = String::from_utf8_lossy(key_bytes);
 
-    let mut copy_value: bool;
+    let copy_value: bool;
     match key.as_ref() {
         "rpc_port" => copy_value = false,
         "rpc_credits_per_hash" => copy_value = false,
